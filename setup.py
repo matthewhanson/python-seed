@@ -17,8 +17,8 @@ dependency_links = [x.strip().replace('git+', '') for x in all_reqs if 'git+' no
 
 setup(
     name='PACKAGENAME',
-    author='',
-    author_email='',
+    author='Matthew Hanson',
+    author_email='matt.a.hanson@gmail.com',
     version=__version__,
     description='python-seed',
     url='https://github.com/',

@@ -10,11 +10,6 @@ version: 2
 
 references:
 
-  container_python27: &container_python27
-    docker:
-      - image: circleci/python:2.7.13
-    working_dir: ~/project
-
   container_python36: &container_python36
     docker:
       - image: circleci/python:3.6.2
@@ -39,26 +34,6 @@ jobs:
           key: v1-repo-{{ .Branch }}-{{ .Revision }}
           paths:
             - ~/project
-
-  install_and_test_27:
-    <<: *container_python27
-    steps:  
-      - *restore_repo
-      - restore_cache:
-          keys: 
-            - v1-dependencies27-{{ checksum "requirements.txt"}}
-            - v1-dependencies27
-      - run: |
-            pip install virtualenv
-            virtualenv ~/venv27
-            . ~/venv27/bin/activate
-            pip install -r requirements.txt
-            pip install -r requirements-dev.txt
-            pytest --cov PACKAGENAME test/
-      - save_cache:
-          key: v1-dependencies27-{{ checksum "requirements.txt"}}
-          paths:
-            - ~/venv
 
   install_and_test_36:
     <<: *container_python36
@@ -116,9 +91,3 @@ workflows:
           filters:
             branches:
               only: master
-  build_test_27:
-    jobs:
-      - checkout_code
-      - install_and_test_27:
-          requires:
-            - checkout_code
